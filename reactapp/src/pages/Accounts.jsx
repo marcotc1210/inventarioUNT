@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import {React, useEffect, useState} from 'react'
 import TitlePage from '../components/TitlePage'
 import Table from '../components/Table'
@@ -80,6 +81,13 @@ const Accounts = () => {
       </div>
 
     </div>
+=======
+import React from 'react'
+
+const Accounts = () => {
+  return (
+    <div>Accounts</div>
+>>>>>>> api
   )
 }
 

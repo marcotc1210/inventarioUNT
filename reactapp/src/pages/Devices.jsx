@@ -1,4 +1,5 @@
 import React from 'react'
+<<<<<<< HEAD
 import TitlePage from '../components/TitlePage'
 import Table from '../components/Table'
 
@@ -61,6 +62,22 @@ const Devices = () => {
         </Modal>
       </div>
 
+=======
+// import TableDevices1 from '../components/TableDevices1'
+import TableDevices from '../components/TableDevices'
+import TitlePage from '../components/TitlePage'
+// import Table from '../components/Table'
+
+const Devices = () => {
+  return (
+    <div>
+      <TitlePage title="Dispositivos" />
+      <div>
+        {/* <TableDevices1/> */}
+        <TableDevices/>
+      </div>
+      
+>>>>>>> api
     </div>
   )
 }

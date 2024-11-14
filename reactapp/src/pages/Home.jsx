@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // Home.js
 import React from 'react';
 import TitlePage from '../components/TitlePage'
@@ -103,3 +104,14 @@ const Home = () => {
 };
 
 export default Home;
+=======
+import React from 'react'
+
+const Home = () => {
+  return (
+    <div>Home</div>
+  )
+}
+
+export default Home
+>>>>>>> api
