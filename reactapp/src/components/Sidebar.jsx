@@ -15,7 +15,7 @@ const Sidebar = () => {
     { id: 1, path: '/', name: 'Dashboard', icon: FiPieChart },
     { id: 2, path: '/devices', name: 'Dispositivos', icon: FiAirplay },
     { id: 3, path: '/accounts', name: 'Cuentas', icon: FiUsers },
-    { id: 6, path: '/reports', name: 'Reportes', icon: FiPrinter },
+    // { id: 6, path: '/reports', name: 'Reportes', icon: FiPrinter },
     { id: 4, path: '/system', name: 'Ajustes del sistema', icon: FiTool },
     //{ id: 5, path: '/profile', name: 'Perfil', icon: FiSettings },
     // { id: 7, path: '/Ayuda', name: 'Ayuda', icon: FiHelpCircle },
