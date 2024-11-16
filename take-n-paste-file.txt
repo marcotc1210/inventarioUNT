@@ -11,3 +11,15 @@
     "react-chartjs-2": "^5.2.0"
   }
 }
+
+
+//////  THUNDER CLIENT TEST //////
+{
+
+  "document": "87654321",
+  "name":"marco",
+  "lastname1":"toledo",
+  "lastname2":"campos",
+  "email":"mart@gmail.com",
+  "password": "bcrypt(123456)"
+}

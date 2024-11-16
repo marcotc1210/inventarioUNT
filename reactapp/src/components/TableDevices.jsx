@@ -69,11 +69,7 @@ const TableDevices = () => {
               <tr>
                 {headers.map((header, index) => (
                   <th key={index} className="p-2 border-b border-gray-300">
-                    {header.isCheckbox ? (
-                      <input type="checkbox" />
-                    ) : (
-                      header.label
-                    )}
+                    {header.label}
                   </th>
                 ))}
               </tr>
@@ -86,7 +82,7 @@ const TableDevices = () => {
                       {header.isCheckbox ? (
                         <input type="checkbox" />
                       ) : (
-                        row[header.label.toLowerCase()] || ''
+                        row[header.key] || ''
                       )}
                     </td>
                   ))}

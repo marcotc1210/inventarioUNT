@@ -2,11 +2,11 @@ import React from 'react';
 import { FaPlusCircle } from "react-icons/fa";
 
 
-const Table = ({ headers = [], data = [] }) => {
+const Table = ({ headers = [], data }) => {
 
   return (
     <>
-      <div class="p-0 bg-gray-100 rounded-xl shadow-md mt-4">
+      <div className="p-0 bg-gray-100 rounded-xl shadow-md mt-4">
 
         {/* Bloque superior con título, filtro y paginación */}
         <div className="pt-4 px-8 flex items-center justify-between mb-4">
@@ -32,12 +32,14 @@ const Table = ({ headers = [], data = [] }) => {
         {/* Tabla */}
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white rounded-lg border border-gray-200">
+            
             <thead className="bg-gray-200 text-gray-700">
               <tr>
                 {/* Renderizar encabezados */}
                 {headers.map((header, index) => (
                   <th key={index} className="p-2 border-b border-gray-300 text-left">
-                    {header.isCheckbox ? <input type="checkbox" /> : header.label}
+                    {/* {header.isCheckbox ? <input type="checkbox" /> : header.label} */}
+                    {header.label} 
                   </th>
                 ))}
               </tr>
@@ -52,7 +54,7 @@ const Table = ({ headers = [], data = [] }) => {
                       {header.isCheckbox ? (
                         <input type="checkbox" />
                       ) : (
-                        row[header.label.toLowerCase()]
+                        row[header.key]
                       )}
                     </td>
                   ))}

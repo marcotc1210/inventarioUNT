@@ -14,23 +14,23 @@ import DeviceRegistrationForm from '../components/DeviceRegistrationForm';
 const Devices = () => {
 
   const headers = [
-    { label: '', isCheckbox: true },
-    { label: 'ID' },
-    { label: 'Tipo' },
-    { label: 'Marca' },
-    { label: 'Modelo' },
-    { label: 'Serie' },
-    { label: 'Color' },
-    { label: 'Ubicacion' },
-    { label: 'Estado' },
-    { label: 'Registro' },
-    { label: 'Estado' },
-    { label: 'Usuario' }
+    // { label: '', isCheckbox: true },
+    { label: 'ID', key: 'id' },
+    { label: 'Tipo', key: 'tipo' },
+    { label: 'Marca', key: 'marca' },
+    { label: 'Modelo', key: 'modelo' },
+    { label: 'Serie', key: 'serie' },
+    { label: 'Color', key: 'color' },
+    { label: 'Ubicacion', key: 'ubicacion' },
+    { label: 'Estado', key: 'estado' },
+    { label: 'Habilitado', key: 'habilitado' },
+    { label: 'Usuario' , key: 'userId'},
+    { label: 'Fecha' , key: 'created_at'},
   ];
 
   const data = [
-    { id: '001', tipo: 'Laptop', marca: 'Dell', modelo: 'XPS', serie: '12345', color: 'Negro', ubicacion: 'Oficina', estado: 'Nuevo', registro: '01/01/2024', estadofinal: 'BUENO', usuario: 'Juan' },
-    { id: '002', tipo: 'Router', marca: 'Cisco', modelo: 'RV340', serie: '67890', color: 'Gris', ubicacion: 'Sala de redes', estado: 'Usado', registro: '02/02/2024', estadofinal: 'REGULAR', usuario: 'Ana' },
+    { id: '001', tipo: 'Laptop', marca: 'Dell', modelo: 'XPS', serie: '12345', color: 'Negro', ubicacion: 'Oficina', estado: 'Bueno', created_at: '01/01/2024', habilitado: '1', userId: 'Juan' },
+    { id: '002', tipo: 'Router', marca: 'Cisco', modelo: 'RV340', serie: '67890', color: 'Gris', ubicacion: 'Sala de redes', estado: 'Regular', created_at: '02/02/2024', habilitado: '0', userId: 'Ana' },
     // Más filas...
   ];
 
