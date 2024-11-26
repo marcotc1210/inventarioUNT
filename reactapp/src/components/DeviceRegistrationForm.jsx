@@ -1,7 +1,7 @@
 // components/DeviceRegistrationForm.js
 import React, { useState } from 'react';
 
-const DeviceRegistrationForm = ({ onSubmit }) => {
+const DeviceRegistrationForm = ({ onSubmit, onClose }) => {
   const [formData, setFormData] = useState({
     id: '',
     tipo: '',
@@ -169,12 +169,21 @@ const DeviceRegistrationForm = ({ onSubmit }) => {
         </div>
       </div>
 
-      <button
-        type="submit"
-        className="w-full bg-blue-800 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600"
-      >
-        Registrar Dispositivo
-      </button>
+      <div className="flex justify-between space-x-4">
+        <button
+          type="button"
+          onClick={onClose}
+          className="w-full bg-gray-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-gray-400 "
+        >
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          className="w-full bg-blue-800 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600"
+        >
+          Registrar
+        </button>
+      </div>
     </form>
   );
 };
