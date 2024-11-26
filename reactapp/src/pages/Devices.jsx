@@ -9,6 +9,7 @@ import useModal from '../hooks/useModal';
 import Modal from '../components/Modal';
 import ModalButton from '../components/ModalButton';
 import DeviceRegistrationForm from '../components/DeviceRegistrationForm';
+import NoRegisterBanner from '../components/NoRegisterBanner';
 
 
 const Devices = () => {
@@ -24,8 +25,8 @@ const Devices = () => {
     { label: 'Ubicacion', key: 'ubicacion' },
     { label: 'Estado', key: 'estado' },
     { label: 'Habilitado', key: 'habilitado' },
-    { label: 'Usuario' , key: 'userId'},
-    { label: 'Fecha' , key: 'created_at'},
+    { label: 'Usuario', key: 'userId' },
+    { label: 'Fecha', key: 'created_at' },
   ];
 
   const data = [
@@ -40,24 +41,33 @@ const Devices = () => {
     <div>
 
       <TitlePage title="Dispositivos" />
-
       <div className='mt-5'>
         <ModalButton onClick={openModal}>
           <div className='flex font-semibold'>
             Nuevo <span className='ml-2'> <TbDeviceDesktopPlus size={22} /> </span>
           </div>
-
         </ModalButton>
-
-        <Table headers={headers} data={data} />
       </div>
+
+
+      {(data.length > 0) ? (
+          <div className='mt-5'>
+            <Table headers={headers} data={data} />
+          </div>
+        ) : (
+          <NoRegisterBanner>
+            Ningún registro agregado.
+          </NoRegisterBanner>
+        )
+      }
+
 
       <div className="registrationModal">
 
         <Modal isOpen={isOpen} onClose={closeModal}>
           <h2 className="text-lg font-bold text-center w-full"> Registrar dispositivo </h2>
 
-          <DeviceRegistrationForm />
+          <DeviceRegistrationForm onClose={closeModal}/>
         </Modal>
       </div>
 
