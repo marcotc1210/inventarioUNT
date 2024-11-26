@@ -7,7 +7,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 // Registrar los componentes de Chart.js
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const Home = () => {
+const Dashboard = () => {
 
   // Datos para el gráfico de barras
   const data = {
@@ -102,4 +102,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Dashboard;
