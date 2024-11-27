@@ -1,0 +1,12 @@
+
+POST https://stunning-barnacle-q7pjqwj7wvw734j6q-8000.app.github.dev/api/tipo
+Content-Type: application/json
+
+{
+  "id": 1,
+  "descripcion": "router"
+}
+
+GET https://stunning-barnacle-q7pjqwj7wvw734j6q-8000.app.github.dev/api/tipos
+Content-Type: application/json
+

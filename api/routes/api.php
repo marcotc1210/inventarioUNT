@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\Api\DispositivoController;
+// use App\Http\Controllers\Api\DispositivoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
-use App\Models\Api\Dispositivo;
+use App\Http\Controllers\Api\TipoController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -20,10 +20,18 @@ Route::controller(UserController::class)->group(function () {
     Route::delete('/usuario/{id}', 'destroy');
 });
 
-// Route::controller(DispositivoController::class)->group(function () {
+// Route::controller(DeviceController::class)->group(function () {
 //     Route::get('/dispositivos', 'index');
 //     Route::get('/dispositivo/{id}', 'show');
 //     Route::post('/dispositivo', 'store');
 //     Route::put('/dispositivo/{id}', 'update');
 //     Route::delete('/dispositivo/{id}', 'destroy');
 // });
+
+Route::controller(TipoController::class)->group(function () {
+    Route::get('/tipos', 'index');
+    Route::get('/tipo/{id}', 'show');
+    Route::post('/tipo', 'store');
+    Route::put('/tipo/{id}', 'update');
+    Route::delete('/tipo/{id}', 'destroy');
+});

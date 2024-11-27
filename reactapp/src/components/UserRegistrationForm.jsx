@@ -1,36 +1,69 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { TbPassword } from 'react-icons/tb';
 
-const UserRegistrationForm = ({ onSubmit, onClose }) => {
+const endpoint = "https://stunning-barnacle-q7pjqwj7wvw734j6q-8000.app.github.dev/api"
+
+const UserRegistrationForm = ({ onClose }) => {
   const [formData, setFormData] = useState({
-    dni: '',
-    nombres: '',
-    apellidos: '',
-    correo: '',
-    imagen: null,
-    rol: '',
+    document: '',
+    name: '',
+    lastname1: '',
+    lastname2: '',
+    email: '',
+    password: '',
   });
 
   const handleChange = (e) => {
-    const { name, value, files } = e.target;
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: files ? files[0] : value,
+      [name]: value,
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(formData);
+
+    const dataToSend = {
+      document: formData.document,
+      name: formData.name,
+      lastname1: formData.lastname1,
+      lastname2: formData.lastname2,
+      email: formData.email,
+      password: formData.password,
+    };
+
+    try {
+      // Realizar la solicitud POST a la API de Laravel
+      await axios.post(`${endpoint}/usuario`, dataToSend);
+      onClose(); // Cerrar el modal después de registrar
+    } catch (error) {
+      console.error('Error al registrar el usuario:', error);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+
       <div>
-        <label className="block text-sm font-medium text-gray-700">DNI</label>
+        <label className="block text-sm font-medium text-gray-700">Documento</label>
         <input
           type="text"
-          name="dni"
-          value={formData.dni}
+          name="document"
+          value={formData.document}
+          onChange={handleChange}
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          required
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Nombre</label>
+        <input
+          type="text"
+          name="name"
+          value={formData.name}
           onChange={handleChange}
           className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           required
@@ -39,11 +72,11 @@ const UserRegistrationForm = ({ onSubmit, onClose }) => {
 
       <div className="md:flex md:space-x-4">
         <div className="flex-1">
-          <label className="block text-sm font-medium text-gray-700">Nombres</label>
+          <label className="block text-sm font-medium text-gray-700">Apellido 1</label>
           <input
             type="text"
-            name="nombres"
-            value={formData.nombres}
+            name="lastname1"
+            value={formData.lastname1}
             onChange={handleChange}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             required
@@ -51,11 +84,11 @@ const UserRegistrationForm = ({ onSubmit, onClose }) => {
         </div>
 
         <div className="flex-1">
-          <label className="block text-sm font-medium text-gray-700">Apellidos</label>
+          <label className="block text-sm font-medium text-gray-700">Apellido 2</label>
           <input
             type="text"
-            name="apellidos"
-            value={formData.apellidos}
+            name="lastname2"
+            value={formData.lastname2}
             onChange={handleChange}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             required
@@ -67,8 +100,8 @@ const UserRegistrationForm = ({ onSubmit, onClose }) => {
         <label className="block text-sm font-medium text-gray-700">Correo</label>
         <input
           type="email"
-          name="correo"
-          value={formData.correo}
+          name="email"
+          value={formData.email}
           onChange={handleChange}
           className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           required
@@ -76,37 +109,22 @@ const UserRegistrationForm = ({ onSubmit, onClose }) => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">Imagen de rostro</label>
+        <label className="block text-sm font-medium text-gray-700"> Password </label>
         <input
-          type="file"
-          name="imagen"
-          accept="image/*"
-          onChange={handleChange}
-          className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Rol</label>
-        <select
-          name="rol"
-          value={formData.rol}
+          type="password"
+          name="password"
+          value={formData.password}
           onChange={handleChange}
           className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           required
-        >
-          <option value="">Seleccione un rol</option>
-          <option value="admin">Administrador</option>
-          <option value="usuario">Usuario</option>
-          <option value="invitado">Invitado</option>
-        </select>
+        />
       </div>
 
       <div className="flex justify-between space-x-4">
         <button
           type="button"
           onClick={onClose}
-          className="w-full bg-gray-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-gray-400 "
+          className="w-full bg-gray-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-gray-400"
         >
           Cancelar
         </button>

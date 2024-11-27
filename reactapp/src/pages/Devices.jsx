@@ -1,16 +1,17 @@
-import React from 'react'
+import { React, useEffect, useState } from 'react';
 import TitlePage from '../components/TitlePage'
 import Table from '../components/Table'
 
 import { TbDeviceDesktopPlus } from "react-icons/tb";
-import { useState } from 'react';
 
 import useModal from '../hooks/useModal';
 import Modal from '../components/Modal';
 import ModalButton from '../components/ModalButton';
 import DeviceRegistrationForm from '../components/DeviceRegistrationForm';
 import NoRegisterBanner from '../components/NoRegisterBanner';
+import axios from 'axios';
 
+const endpoint = "https://stunning-barnacle-q7pjqwj7wvw734j6q-8000.app.github.dev/api";
 
 const Devices = () => {
 
@@ -37,10 +38,27 @@ const Devices = () => {
 
   const { isOpen, openModal, closeModal } = useModal(); //estados del modal
 
+  const [deviceData, setDeviceData] = useState([]); // Estado para los datos de usuarios
+  
+  useEffect(() => {
+    getAllDevices();
+  }, []);
+
+  const getAllDevices = async () => {
+    try {
+      const response = await axios.get(`${endpoint}/dispositivos`);
+      setUserData(response.data);
+      // console.log(response.data);
+    } catch (error) {
+      console.error('Error al obtener registros:', error);
+    }
+  }
+
   return (
     <div>
 
       <TitlePage title="Dispositivos" />
+
       <div className='mt-5'>
         <ModalButton onClick={openModal}>
           <div className='flex font-semibold'>
@@ -52,7 +70,7 @@ const Devices = () => {
 
       {(data.length > 0) ? (
           <div className='mt-5'>
-            <Table headers={headers} data={data} />
+            <Table headers={headers} data={deviceData} />
           </div>
         ) : (
           <NoRegisterBanner>
