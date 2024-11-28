@@ -1,0 +1,145 @@
+import React, { useMemo } from "react";
+import {
+  useReactTable,
+  getCoreRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  flexRender,
+} from "@tanstack/react-table";
+
+const Table = ({ headers = [], data = [] }) => {
+  const columns = useMemo(
+    () =>
+      headers.map((header) => ({
+        accessorKey: header.key,
+        header: header.label,
+      })),
+    [headers]
+  );
+
+  const table = useReactTable({
+    data,
+    columns,
+    initialState: {
+      pagination: { pageIndex: 0, pageSize: 5 },
+    },
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+  });
+
+  // Helper para generar los números de páginas truncados
+  const generatePageNumbers = () => {
+    const { pageIndex, pageSize } = table.getState().pagination;
+    const totalPages = Math.ceil(table.getFilteredRowModel().rows.length / pageSize);
+
+    const pages = [];
+    for (let i = 0; i < totalPages; i++) {
+      if (
+        i === 0 || // Primera página
+        i === totalPages - 1 || // Última página
+        Math.abs(pageIndex - i) <= 1 // Páginas cercanas a la actual
+      ) {
+        pages.push(i);
+      } else if (
+        (i === pageIndex - 2 && !pages.includes("...")) ||
+        (i === pageIndex + 2 && !pages.includes("..."))
+      ) {
+        pages.push("...");
+      }
+    }
+    return pages;
+  };
+
+  return (
+    <div className="p-0 bg-gray-100 rounded-xl shadow-md mt-4">
+      <div className="pt-4 px-8 flex items-center justify-between mb-4">
+        <div className="flex items-center space-x-4">
+          <span className="text-gray-600">Mostrar</span>
+          <select
+            className="border border-gray-300 rounded-md text-gray-600 px-2 py-1"
+            value={table.getState().pagination.pageSize}
+            onChange={(e) => table.setPageSize(Number(e.target.value))}
+          >
+            {[5, 10, 20].map((size) => (
+              <option key={size} value={size}>
+                {size}
+              </option>
+            ))}
+          </select>
+        </div>
+        {/* Controles de paginación */}
+        <div className="flex items-center space-x-2">
+          <button
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+            className="text-gray-600 px-3 py-2 rounded-md bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+          >
+            <span className="material-icons">arrow_back</span>
+          </button>
+
+          {generatePageNumbers().map((page, index) =>
+            page === "..." ? (
+              <span key={index} className="text-gray-600">...</span>
+            ) : (
+              <button
+                key={page}
+                onClick={() => table.setPageIndex(page)}
+                className={`px-3 py-2 rounded-md ${
+                  table.getState().pagination.pageIndex === page
+                    ? "bg-gray-900 text-white"
+                    : "bg-gray-700 text-gray-300 hover:bg-gray-800"
+                }`}
+              >
+                {page + 1}
+              </button>
+            )
+          )}
+
+          <button
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+            className="text-gray-600 px-3 py-2 rounded-md bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+          >
+            <span className="material-icons">arrow_forward</span>
+          </button>
+        </div>
+      </div>
+
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white rounded-lg border border-gray-200">
+          <thead className="bg-gray-200 text-gray-700">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th
+                    key={header.id}
+                    className="p-2 border-b border-gray-300 text-left cursor-pointer"
+                    onClick={header.column.getToggleSortingHandler()}
+                  >
+                    {flexRender(header.column.columnDef.header, header.getContext())}
+                    {header.column.getIsSorted() === "asc" && " 🔼"}
+                    {header.column.getIsSorted() === "desc" && " 🔽"}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody className="text-gray-800">
+            {table.getRowModel().rows.map((row) => (
+              <tr key={row.id} className="hover:bg-gray-100">
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id} className="p-2 border-b border-gray-300 text-left">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+export default Table;

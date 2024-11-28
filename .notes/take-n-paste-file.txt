@@ -1,0 +1,304 @@
+
+//boton de tabla
+<div className="flex items-center space-x-2 hover:bg-blue-800 hover:text-white bg-gray-300 px-4 py-2 rounded-lg">
+    <h2 className="text-sm font-semibold">Nuevo</h2>
+    {icon}
+</div>
+
+{
+  "dependencies": {
+    "chart.js": "^4.4.6",
+    "react-chartjs-2": "^5.2.0"
+  }
+}
+
+
+//////  THUNDER CLIENT TEST //////
+{
+
+  "document": "87654321",
+  "name":"marco",
+  "lastname1":"toledo",
+  "lastname2":"campos",
+  "email":"mart@gmail.com",
+  "password": "bcrypt(123456)"
+}
+
+
+//DEVICE REGISTRATOIN FORM ANTES DE INCLUIR LOS CAMPOS CON CLAVES FORANEAS
+
+// components/DeviceRegistrationForm.js
+import React, { useState } from 'react';
+
+const DeviceRegistrationForm = ({ onSubmit, onClose }) => {
+  const [formData, setFormData] = useState({
+    // id: '',
+    tipo: '',
+    //estado: '', //es de la otra tabla, por el momento lo dejamos como está
+    ubicacion: '', // la ubicacion es de cada registro observado ojo pasar a la otra tabla
+    // habilitado: '',
+    //usuario: '', //esta en otra tabla, traer datos mediante referencia de la sesion actual
+    fecha: '',
+    //mas detalles
+    color: '',
+    marca: '',
+    modelo: '',
+    serie: '',
+    dimensionLargo: '',
+    dimensionAlto: '',
+    dimensionProfundidad: '',
+    // registro: ''
+
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit(formData);
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+
+      {/* Generar automaticamnte el ID */}
+      {/* <div>
+        <label className="block text-sm font-medium text-gray-700">ID</label>
+
+        <input
+          type="text"
+          name="id"
+          value={formData.id}
+          onChange={handleChange}
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          required
+        />
+      </div> */}
+
+      <div className="md:grid md:grid-cols-2 md:gap-4">
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Tipo</label>
+          <input
+            type="text"
+            name="tipo"
+            value={formData.tipo}
+            onChange={handleChange}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            required
+          />
+        </div>
+
+        {/* <div>
+          <label className="block text-sm font-medium text-gray-700">Estado</label>
+          <input
+            type="text"
+            name="estado"
+            value={formData.estado}
+            onChange={handleChange}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            required
+          />
+        </div> */}
+
+        {/* Ubicacion */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Ubicación</label>
+          <input
+            type="text"
+            name="ubicacion"
+            value={formData.ubicacion}
+            onChange={handleChange}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            required
+          />
+        </div>
+
+        {/* Habilitado */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Habilitado</label>
+          <input
+            type="number"
+            name="habilitado"
+            value={formData.habilitado}
+            onChange={handleChange}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            required
+          />
+        </div>
+
+        {/* <div>
+          <label className="block text-sm font-medium text-gray-700">Usuario</label>
+          <input
+            type="text"
+            name="usuario"
+            value={formData.usuario}
+            onChange={handleChange}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            required
+          />
+        </div> */}
+
+        {/* Fecha Ingreso */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Fecha Ingreso</label>
+          <input
+            type="date"
+            name="fecha_ingreso"
+            value={formData.fecha}
+            onChange={handleChange}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            required
+          />
+        </div>
+        {/* Marca */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Marca</label>
+          <input
+            type="text"
+            name="marca"
+            value={formData.marca}
+            onChange={handleChange}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            required
+          />
+        </div>
+        {/* Modelo */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Modelo</label>
+          <input
+            type="text"
+            name="modelo"
+            value={formData.modelo}
+            onChange={handleChange}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            required
+          />
+        </div>
+        {/* Serie */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Serie</label>
+          <input
+            type="text"
+            name="serie"
+            value={formData.serie}
+            onChange={handleChange}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            required
+          />
+        </div>
+        {/* Color */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Color</label>
+          <input
+            type="text"
+            name="color"
+            value={formData.color}
+            onChange={handleChange}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            required
+          />
+        </div>
+        {/* Dimensiones */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <label for="largo" className="block text-sm font-medium text-gray-700 mb-1">Largo (cm)</label>
+          <input
+            type="number"
+            id="largo"
+            name="largo"
+            placeholder="Ej. 100"
+            class="w-full border border-gray-300 rounded-md shadow-sm px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900"
+            required
+          />
+        </div>
+
+
+        <div>
+          <label for="alto" className="block text-sm font-medium text-gray-700 mb-1">Alto (cm)</label>
+          <input
+            type="number"
+            id="alto"
+            name="alto"
+            placeholder="Ej. 50"
+            class="w-full border border-gray-300 rounded-md shadow-sm px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900"
+            required
+          />
+        </div>
+
+        <div>
+          <label for="profundidad" className="block text-sm font-medium text-gray-700 mb-1">Profundidad (cm)</label>
+          <input
+            type="number"
+            id="profundidad"
+            name="profundidad"
+            placeholder="Ej. 30"
+            class="w-full border border-gray-300 rounded-md shadow-sm px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900"
+            required
+          />
+        </div>
+
+
+        {/* <div>
+          <label className="block text-sm font-medium text-gray-700"> Dimensiones</label>
+          <input
+            type="text"
+            name="dimensionLargo"
+            value={formData.dimensionLargo}
+            onChange={handleChange}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Color</label>
+          <input
+            type="text"
+            name="dimensionAlto"
+            value={formData.dimensionAlto}
+            onChange={handleChange}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Color</label>
+          <input
+            type="text"
+            name="dimensionProfundidad"
+            value={formData.dimensionProfundidad}
+            onChange={handleChange}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            required
+          />
+        </div> */}
+
+      </div>
+
+      <div className="flex justify-between space-x-4">
+        <button
+          type="button"
+          onClick={onClose}
+          className="w-full bg-gray-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-gray-400 "
+        >
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          className="w-full bg-blue-800 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600"
+        >
+          Registrar
+        </button>
+      </div>
+    </form>
+  );
+};
+
+export default DeviceRegistrationForm;
