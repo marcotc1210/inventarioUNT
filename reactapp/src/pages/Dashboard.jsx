@@ -37,7 +37,7 @@ const Dashboard = () => {
 
           {/* Inactive Devices */}
           <div className="bg-white shadow-md rounded-lg p-6 flex relative h-32 overflow-hidden">
-            <div className="absolute inset-0 border-l-4 border-red-500 opacity-20 pointer-events-none"></div>
+            <div className="absolute inset-0 border-l-4 border-red-900 opacity-30 pointer-events-none"></div>
             <div className="absolute w-full h-full flex items-center justify-center pointer-events-none">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -78,6 +78,7 @@ const Dashboard = () => {
               <p className="text-4xl font-bold text-yellow-800 self-end">30</p>
             </div>
           </div>
+
         </div>
 
         {/* Graphs Section */}

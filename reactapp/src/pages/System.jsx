@@ -1,8 +1,9 @@
-import { React, useState, useEffect } from 'react'
-import TitlePage from '../components/TitlePage'
+import { React, useState, useEffect } from 'react';
+import TitlePage from '../components/TitlePage';
+import NoRegisterBanner from '../components/NoRegisterBanner';
 
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const endpoint = "https://stunning-barnacle-q7pjqwj7wvw734j6q-8000.app.github.dev/api";
 
@@ -43,6 +44,19 @@ const System = () => {
     navigate('/system');
   }
 
+  const deleteTipo = async (tipoId) => {
+    if (window.confirm('¿Estás seguro de borrar este tipo?')) {
+      try {
+        await axios.delete(`${endpoint}/tipo/${tipoId}`); // Use DELETE method
+        // setTiposData(tiposData.filter((tipo) => tipo.id !== tipoId)); // Update UI
+        navigate('/system');
+      } catch (error) {
+        console.error('Error deleting device type:', error);
+        // Handle errors appropriately (e.g., display an error message to the user)
+      }
+    }
+  };
+
   return (
     <div>
       <TitlePage title={'Ajustes del sistema'} />
@@ -63,17 +77,19 @@ const System = () => {
       </div>
 
       {/* Show tipos */}
-      {(tiposData.length > 0) ? (
+      { tiposData.length > 0 ? (
         <div>
           <ul>
             {tiposData.map((tipo) => (
               <li key={tipo.id}>
+                {tipo.id}
                 {tipo.descripcion}
+                <button className='mx-4 bg-red-600 rounded-lg px-4 py-1 hover:bg-red-500' onClick={() => deleteTipo(tipo.id)}>Eliminar</button>
               </li>
             ))}
           </ul>
         </div>
-      ) : "no hay registros"
+      ) : <NoRegisterBanner>Ningún registro agregado.</NoRegisterBanner>
       }
 
     </div>

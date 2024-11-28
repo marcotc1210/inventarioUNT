@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { TbPassword } from 'react-icons/tb';
 
-const endpoint = "https://stunning-barnacle-q7pjqwj7wvw734j6q-8000.app.github.dev/api"
+const endpoint = "https://stunning-barnacle-q7pjqwj7wvw734j6q-8000.app.github.dev/api";
 
 const UserRegistrationForm = ({ onClose }) => {
   const [formData, setFormData] = useState({
@@ -37,6 +37,7 @@ const UserRegistrationForm = ({ onClose }) => {
     try {
       // Realizar la solicitud POST a la API de Laravel
       await axios.post(`${endpoint}/usuario`, dataToSend);
+      console.log('Registro existoso de usuario.');
       onClose(); // Cerrar el modal después de registrar
     } catch (error) {
       console.error('Error al registrar el usuario:', error);
@@ -47,7 +48,7 @@ const UserRegistrationForm = ({ onClose }) => {
     <form onSubmit={handleSubmit} className="space-y-4">
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">Documento</label>
+        <label className="block text-sm font-medium text-gray-700">Documento de identidad</label>
         <input
           type="text"
           name="document"
@@ -72,7 +73,7 @@ const UserRegistrationForm = ({ onClose }) => {
 
       <div className="md:flex md:space-x-4">
         <div className="flex-1">
-          <label className="block text-sm font-medium text-gray-700">Apellido 1</label>
+          <label className="block text-sm font-medium text-gray-700">Apellido Paterno</label>
           <input
             type="text"
             name="lastname1"
@@ -84,7 +85,7 @@ const UserRegistrationForm = ({ onClose }) => {
         </div>
 
         <div className="flex-1">
-          <label className="block text-sm font-medium text-gray-700">Apellido 2</label>
+          <label className="block text-sm font-medium text-gray-700">Apellido Materno</label>
           <input
             type="text"
             name="lastname2"

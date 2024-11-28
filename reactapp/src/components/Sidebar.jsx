@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 // Icons
@@ -6,10 +6,24 @@ import { FiSettings, FiUsers, FiPieChart, FiLogOut, FiHelpCircle, FiAirplay, FiP
 
 
 const Sidebar = () => {
-  const [activeLink, setActiveLink] = useState(false);
+  const [activeLink, setActiveLink] = useState(null); // Use null for initial state
+
+  useEffect(() => {
+    // Get the current path on component mount
+    const currentPath = window.location.pathname;
+
+    // Find the matching link based on path
+    const matchingLink = SIDEBAR_LINKS.find(link => link.path === currentPath);
+
+    // If a match is found, set activeLink
+    if (matchingLink) {
+      setActiveLink(matchingLink.id);
+    }
+  }, []); // Empty dependency array to run only once on mount
+
   const handleLinkClick = (index) => {
-    setActiveLink(index)
-  }
+    setActiveLink(index);
+  };
 
   const SIDEBAR_LINKS = [
     { id: 1, path: '/', name: 'Dashboard', icon: FiPieChart },
@@ -46,7 +60,7 @@ const Sidebar = () => {
       {/* Navigation Links */}
       <ul className='mt-10 lg:mt-15 space-y-3'>
         {SIDEBAR_LINKS.map((link) => (
-          <li key={link.id} className={`text-gray-800 font-bold rounded-md py-2 px-3 hover:bg-gray-300 hover:text-blue-800 ${activeLink == link.id ? 'bg-blue-800 text-white' : ''}`}>
+          <li key={link.id} className={`text-gray-800 font-bold rounded-md py-2 px-3 hover:bg-gray-300 hover:text-blue-800 ${activeLink === link.id ? 'bg-blue-800 text-white' : ''}`}>
             <Link to={link.path} className='flex justify-center lg:justify-start items-center lg:space-x-3' onClick={() => handleLinkClick(link.id)}>
               <span className='flex justify-center'>{React.createElement(link.icon)}</span>
               <span className='text-sm hidden lg:flex'>{link.name}</span>

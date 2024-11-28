@@ -13,11 +13,11 @@ const endpoint = "https://stunning-barnacle-q7pjqwj7wvw734j6q-8000.app.github.de
 
 const Accounts = () => {
   const userHeaders = [
-    { label: 'ID', key: 'id' },
+    // { label: 'ID', key: 'id' },
     { label: 'Documento', key: 'document' },
     { label: 'Nombre', key: 'name' },
-    { label: 'Apellido M.', key: 'lastname1' },
-    { label: 'Apellido P.', key: 'lastname2' },
+    { label: 'Apellido P.', key: 'lastname1' },
+    { label: 'Apellido M.', key: 'lastname2' },
     { label: 'Correo', key: 'email' },
     { label: 'Fecha de registro', key: 'created_at' }
   ];
