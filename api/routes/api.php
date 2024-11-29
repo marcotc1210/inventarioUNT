@@ -1,11 +1,11 @@
 <?php
 
-// use App\Http\Controllers\Api\DispositivoController;
+use App\Http\Controllers\Api\DispositivoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\TipoController;
-use App\Http\Controllers\Api\DispositivoController;
+use App\Http\Controllers\Api\EstadoController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -27,6 +27,14 @@ Route::controller(DispositivoController::class)->group(function () {
     Route::post('/dispositivo', 'store');
     Route::put('/dispositivo/{id}', 'update');
     Route::delete('/dispositivo/{id}', 'destroy');
+});
+
+Route::controller(EstadoController::class)->group(function () {
+    Route::get('/estados', 'index');
+    Route::get('/estado/{id}', 'show');
+    Route::post('/estado', 'store');
+    Route::put('/estado/{id}', 'update');
+    Route::delete('/estado/{id}', 'destroy');
 });
 
 Route::controller(TipoController::class)->group(function () {

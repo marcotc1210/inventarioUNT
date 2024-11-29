@@ -14,17 +14,19 @@ return new class extends Migration
         Schema::create('dispositivos', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('tipoId')->constrained('tipos')->onDelete('cascade');
+            $table->foreignId('tipoId')->nullable()->constrained('tipos')->nullOnDelete();
+            $table->foreignId('estadoId')->nullable()->constrained('estados')->nullOnDelete();
             $table->string('ubicacion');
-            // $table->string('habilitado'); varia con el tiempo
-            $table->string('color');
-            $table->string('marca');
-            $table->string('modelo');
-            $table->string('serie');
+            $table->string('habilitado'); //varia con el tiempo
+            $table->string('color')->nullable();
+            $table->string('marca')->nullable();
+            $table->string('modelo')->nullable();
+            $table->string('serie')->nullable();
+            $table->date('fecha_ingreso')->nullable();
 
-            $table->string('dimensionLargo');
-            $table->string('dimensionAlto');
-            $table->string('dimensionProfundidad');
+            $table->string('dimensionLargo')->nullable();
+            $table->string('dimensionAlto')->nullable();
+            $table->string('dimensionProfundidad')->nullable();
 
             $table->timestamps();
         });

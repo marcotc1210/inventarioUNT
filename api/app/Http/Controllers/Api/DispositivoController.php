@@ -19,9 +19,9 @@ class DispositivoController extends Controller
         $dispositivo = new Dispositivo();
 
         $dispositivo->tipoId = $request->tipo;
-        // $dispositivo->estado = $request->estado;
+        $dispositivo->estadoId = $request->estado;
         $dispositivo->ubicacion = $request->ubicacion;
-        // $dispositivo->habilitado = $request->habilitado;
+        $dispositivo->habilitado = $request->habilitado;
         // $dispositivo->usuario = $request->usuario;
         $dispositivo->fecha_ingreso = $request->fecha_ingreso;
         $dispositivo->color = $request->color;

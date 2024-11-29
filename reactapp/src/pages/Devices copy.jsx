@@ -16,7 +16,7 @@ const endpoint = "https://stunning-barnacle-q7pjqwj7wvw734j6q-8000.app.github.de
 const Devices = () => {
 
   const headers = [
-    { key: 'id', label: 'ID', tooltip: "" },
+    { key: 'id', label: 'Id', tooltip: "" },
     { key: 'tipoId', label: 'Tipo', tooltip: "" },
     { key: 'estadoId', label: 'Estado', tooltip: "" },
     { key: 'ubicacion', label: 'Ubicacion', tooltip: "" },
@@ -69,12 +69,14 @@ const Devices = () => {
           estadoId: estados[device.estadoId] || `Estado desconocido (${device.estadoId})`,
           habilitado: device.habilitado ? "Habilitado" : "De baja", // Transformación de habilitado
           ubicacion: device.ubicacion || "No registrado",
-          fecha_ingreso: device.fecha_ingreso || "No registrado",
           color: device.color || "No registrado",
           marca: device.marca || "No registrado",
           modelo: device.modelo || "No registrado",
           serie: device.serie || "No registrado",
           dimensiones: `${device.dimensionLargo || 'N/A'} x ${device.dimensionAlto || 'N/A'} x ${device.dimensionProfundidad || 'N/A'}`,
+          // dimensionLargo: device.dimensionLargo || "No registrado",
+          // dimensionAlto: device.dimensionAlto || "No registrado",
+          // dimensionProfundidad: device.dimensionProfundidad || "No registrado",
         }));
 
         setDeviceData(transformedData);

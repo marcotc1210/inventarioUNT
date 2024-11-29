@@ -13,13 +13,14 @@ const endpoint = "https://stunning-barnacle-q7pjqwj7wvw734j6q-8000.app.github.de
 
 const Accounts = () => {
   const userHeaders = [
-    // { label: 'ID', key: 'id' },
-    { label: 'Documento', key: 'document' },
+    { label: 'ID', key: 'id' },
+    { label: 'DNI', key: 'document' },
     { label: 'Nombre', key: 'name' },
     { label: 'Apellido P.', key: 'lastname1' },
     { label: 'Apellido M.', key: 'lastname2' },
     { label: 'Correo', key: 'email' },
-    { label: 'Fecha de registro', key: 'created_at' }
+    { label: 'Acciones', key: 'actions' },
+    // { label: 'Fecha de registro', key: 'created_at' }
   ];
 
   const { isOpen, openModal, closeModal } = useModal();
@@ -45,6 +46,26 @@ const Accounts = () => {
     getAllUsers(); // Obtener los usuarios después de agregar uno nuevo
   };
 
+  const handleEdit = async (user) => {
+    console.log("Editar usuario:", user);
+    //setTitleModal("Editar dispositivo");
+    openModal(); //modal con el formulario de edición
+  };
+
+  const handleDelete = async (user) => {
+    const confirmDelete = window.confirm(`¿Estás seguro de eliminar al usuario ${user.id}?`);
+    if (confirmDelete) {
+      try {
+        await axios.delete(`${endpoint}/usuario/${user.id}`);
+        setUserData((prevData) => prevData.filter((d) => d.id !== user.id));
+        alert("Usuario eliminado correctamente");
+      } catch (error) {
+        console.error("Error al eliminar el usuario:", error);
+        alert("No se pudo eliminar el usuario");
+      }
+    }
+  };
+
   return (
     <div>
       <TitlePage title="Cuentas de usuario" />
@@ -59,7 +80,7 @@ const Accounts = () => {
 
       {userData.length > 0 ? (
         <div className='mt-5'>
-          <Table headers={userHeaders} data={userData} />
+          <Table headers={userHeaders} data={userData} onEdit={handleEdit} onDelete={handleDelete} />
         </div>
       ) : (
         <NoRegisterBanner>Ningún registro agregado.</NoRegisterBanner>

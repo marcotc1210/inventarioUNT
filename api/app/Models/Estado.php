@@ -3,9 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Dispositivo;
 
-class Tipo extends Model
+class Estado extends Model
 {
     protected $fillable = [
         'descripcion',

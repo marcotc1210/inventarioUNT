@@ -9,10 +9,10 @@ class Dispositivo extends Model
 {
     protected $fillable = [
         'tipoId',
-        // 'estado',
+        'estadoId',
         'ubicacion',
         'fecha_ingreso',
-        // 'habilitado',
+        'habilitado',
         // 'usuario',
         'color',
         'marca',

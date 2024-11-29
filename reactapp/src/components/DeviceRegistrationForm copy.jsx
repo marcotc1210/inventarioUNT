@@ -9,9 +9,9 @@ const DeviceRegistrationForm = ({ onClose }) => {
   const [formData, setFormData] = useState({
     // id: '',
     tipo: '',
-    estado: '', //es de la otra tabla, por el momento lo dejamos como está
+    //estado: '', //es de la otra tabla, por el momento lo dejamos como está
     ubicacion: '', // la ubicacion es de cada registro observado ojo pasar a la otra tabla
-    habilitado: false, //falso por defecto
+    // habilitado: '',
     //usuario: '', //esta en otra tabla, traer datos mediante referencia de la sesion actual
     fecha_ingreso: '',
     //mas detalles
@@ -27,14 +27,9 @@ const DeviceRegistrationForm = ({ onClose }) => {
   });
 
   const [tipos, setTipos] = useState([]); // State for device types
-  const [estados, setEstados] = useState([]); // State for device types
 
   useEffect(() => {
     getAllTipos();
-  }, []);
-
-  useEffect(() => {
-    getAllEstados();
   }, []);
 
   const getAllTipos = async () => {
@@ -46,21 +41,11 @@ const DeviceRegistrationForm = ({ onClose }) => {
     }
   };
 
-  const getAllEstados = async () => {
-    try {
-      const response = await axios.get(`${endpoint}/estados`);
-      setEstados(response.data);
-    } catch (error) {
-      console.error('Ocurrió un error al recuperar los estados:', error);
-    }
-  };
-
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: type === 'checkbox' ? checked : value, // Ajuste para manejar checkboxes
+      [name]: value,
     });
   };
 
@@ -69,9 +54,7 @@ const DeviceRegistrationForm = ({ onClose }) => {
 
     const dataToSend = {
       tipo: formData.tipo,
-      estado: formData.estado,
       ubicacion: formData.ubicacion,
-      habilitado: formData.habilitado,
       fecha_ingreso: formData.fecha_ingreso,
       marca: formData.marca,
       modelo: formData.modelo,
@@ -96,11 +79,35 @@ const DeviceRegistrationForm = ({ onClose }) => {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
 
-      {/* Generar automaticamente un ID con la fecha y el año */}
+      {/* Generar automaticamnte el ID */}
+      {/* <div>
+        <label className="block text-sm font-medium text-gray-700">ID</label>
 
+        <input
+          type="text"
+          name="id"
+          value={formData.id}
+          onChange={handleChange}
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          required
+        />
+      </div> */}
       {/* CAMPOS DE FORMULARIO */}
       <div className="md:grid md:grid-cols-2 md:gap-4">
+
         {/* Tipo */}
+        {/* <div>
+          <label className="block text-sm font-medium text-gray-700">Tipo</label>
+          <input
+            type="text"
+            name="tipo"
+            value={formData.tipo}
+            onChange={handleChange}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            required
+          />
+        </div> */}
+
         <div>
           <label className="block text-sm font-medium text-gray-700">Tipo</label>
           <select
@@ -114,25 +121,6 @@ const DeviceRegistrationForm = ({ onClose }) => {
             {tipos.map((tipo) => (
               <option key={tipo.id} value={tipo.id}>
                 {tipo.descripcion}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Estado */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Estado</label>
-          <select
-            name="estado"
-            value={formData.estado}
-            onChange={handleChange}
-            className="mt-1 block w-full px-3 py-[9px] border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-            required
-          >
-            <option value="">Selecciona un estado</option>
-            {estados.map((estado) => (
-              <option key={estado.id} value={estado.id}>
-                {estado.descripcion}
               </option>
             ))}
           </select>
@@ -152,7 +140,19 @@ const DeviceRegistrationForm = ({ onClose }) => {
         </div>
 
         {/* Habilitado */}
-        <div className="mt-4">
+        {/* <div>
+          <label className="block text-sm font-medium text-gray-700">Habilitado</label>
+          <input
+            type="number"
+            name="habilitado"
+            value={formData.habilitado}
+            onChange={handleChange}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            required
+          />
+        </div> */}
+
+        {/* <div className="mt-4">
           <label htmlFor="habilitado" className="flex items-center cursor-pointer">
             <span className="mr-3 text-sm font-medium text-gray-700">Habilitado</span>
             <div className="relative">
@@ -160,16 +160,15 @@ const DeviceRegistrationForm = ({ onClose }) => {
                 type="checkbox"
                 id="habilitado"
                 name="habilitado"
-                checked={formData.habilitado}
                 className="sr-only peer"
                 // onChange={(e) => setHabilitado(e.target.checked)} // Manejo del estado
                 onChange={handleChange}
               />
-              <div className="w-10 h-6 bg-gray-200 rounded-full peer peer-checked:bg-blue-600 peer-focus:ring-blue-500 transition-colors"></div>
+              <div className="w-10 h-6 bg-gray-200 rounded-full peer peer-checked:bg-indigo-600 peer-focus:ring-indigo-500 transition-colors"></div>
               <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-white border border-gray-300 rounded-full peer-checked:translate-x-4 peer-checked:border-transparent transition-transform"></div>
             </div>
           </label>
-        </div>
+        </div> */}
 
 
         {/* Fecha Ingreso */}
@@ -181,6 +180,7 @@ const DeviceRegistrationForm = ({ onClose }) => {
             value={formData.fecha_ingreso}
             onChange={handleChange}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            required
           />
         </div>
 
@@ -193,6 +193,7 @@ const DeviceRegistrationForm = ({ onClose }) => {
             value={formData.marca}
             onChange={handleChange}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            required
           />
         </div>
 
@@ -205,7 +206,7 @@ const DeviceRegistrationForm = ({ onClose }) => {
             value={formData.modelo}
             onChange={handleChange}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-            
+            required
           />
         </div>
 
@@ -218,7 +219,7 @@ const DeviceRegistrationForm = ({ onClose }) => {
             value={formData.serie}
             onChange={handleChange}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-            
+            required
           />
         </div>
 
@@ -231,7 +232,7 @@ const DeviceRegistrationForm = ({ onClose }) => {
             value={formData.color}
             onChange={handleChange}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-            
+            required
           />
         </div>
 
@@ -247,7 +248,7 @@ const DeviceRegistrationForm = ({ onClose }) => {
               min="0"
               onChange={handleChange}
               className="w-full md:w-1/3 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              
+              required
             />
             <input
               type="number"
@@ -257,7 +258,7 @@ const DeviceRegistrationForm = ({ onClose }) => {
               min="0"
               onChange={handleChange}
               className="w-full md:w-1/3 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              
+              required
             />
             <input
               type="number"
@@ -267,7 +268,7 @@ const DeviceRegistrationForm = ({ onClose }) => {
               min="0"
               onChange={handleChange}
               className="w-full md:w-1/3 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              
+              required
             />
           </div>
         </div>

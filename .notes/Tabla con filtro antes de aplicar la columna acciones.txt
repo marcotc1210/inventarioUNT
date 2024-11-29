@@ -7,11 +7,8 @@ import {
   flexRender,
 } from "@tanstack/react-table";
 
-import { FaArrowRightLong, FaArrowLeftLong } from "react-icons/fa6";
-import { formatIfDate } from "../utils/formatters";
 
-
-const Table = ({ headers = [], data = [], onEdit, onDelete }) => {
+const Table = ({ headers = [], data = [] }) => {
   const [visibleColumns, setVisibleColumns] = useState(headers.map((header) => header.key));
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -23,36 +20,10 @@ const Table = ({ headers = [], data = [], onEdit, onDelete }) => {
       headers.map((header, index) => ({
         accessorKey: header.key,
         header: header.label,
-        cell: (info) => {
-          if (header.key === "actions") {
-            // Manejo de la columna de acciones
-            const rowData = info.row.original; // Obtener datos de la fila actual
-            return (
-              <div className="flex gap-2">
-                <button
-                  className="text-blue-600 hover:underline"
-                  onClick={() => onEdit(rowData)}
-                >
-                  Editar
-                </button>
-                <button
-                  className="text-red-600 hover:underline"
-                  onClick={() => onDelete(rowData)}
-                >
-                  Eliminar
-                </button>
-              </div>
-            );
-          }
-
-          // Aplicar formato para fechas o devolver el valor por defecto
-          return header.isDate ? formatIfDate(info.getValue()) : info.getValue();
-        },
         meta: { alwaysVisible: index < 3 }, // Las tres primeras columnas siempre visibles
       })),
-    [headers, onEdit, onDelete]
+    [headers]
   );
-
 
   // Filtrar las columnas visibles
   const filteredColumns = useMemo(
@@ -96,6 +67,20 @@ const Table = ({ headers = [], data = [], onEdit, onDelete }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  // Function to handle edit button click
+  const handleEditClick = (rowData) => {
+    // Implement your logic to handle edit functionality here
+    // You can open a modal, navigate to an edit page, etc.
+    console.log("Edit row data:", rowData); // For demonstration purposes
+  };
+
+  // Function to handle delete button click
+  const handleDeleteClick = (rowData) => {
+    // Implement your logic to handle delete functionality here
+    // Confirm with the user, send a delete request to your backend, etc.
+    console.log("Delete row data:", rowData); // For demonstration purposes
+  };
 
   return (
     <div className="p-0 bg-gray-100 rounded-xl shadow-md mt-4">
@@ -147,9 +132,9 @@ const Table = ({ headers = [], data = [], onEdit, onDelete }) => {
           <button
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
-            className="text-white px-3 py-2 rounded-md bg-gray-500 hover:bg-gray-600"
+            className="text-gray-600 px-2 py-1 rounded-md bg-gray-200"
           >
-            <FaArrowLeftLong />
+            Anterior
           </button>
           <span>
             Página{" "}
@@ -160,10 +145,9 @@ const Table = ({ headers = [], data = [], onEdit, onDelete }) => {
           <button
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
-            className="text-white px-3 py-2 rounded-md bg-gray-500 hover:bg-gray-600"
+            className="text-gray-600 px-2 py-1 rounded-md bg-gray-200"
           >
-            {/* Siguiente */}
-            <FaArrowRightLong />
+            Siguiente
           </button>
           <div>
             <span>Mostrar </span>
@@ -207,7 +191,7 @@ const Table = ({ headers = [], data = [], onEdit, onDelete }) => {
               <tr key={row.id} className="hover:bg-gray-100">
                 {row.getVisibleCells().map((cell) => (
                   <td key={cell.id} className="p-2 border-b border-gray-300 text-left">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}                    
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}
               </tr>
