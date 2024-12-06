@@ -1,17 +1,15 @@
-import {React, useState, useEffect } from 'react';
-
+import { React, useState, useEffect } from 'react';
 import axios from 'axios';
 
 const endpoint = "https://stunning-barnacle-q7pjqwj7wvw734j6q-8000.app.github.dev/api";
 
-const DeviceRegistrationForm = ({ onClose }) => {
+const DeviceEditForm = ({ device, onClose }) => {
+  //console.log(device);
   const [formData, setFormData] = useState({
-    // id: '',
     tipo: '',
-    estado: '', //es de la otra tabla, por el momento lo dejamos como está
-    ubicacion: '', // la ubicacion es de cada registro observado ojo pasar a la otra tabla
-    habilitado: false, //falso por defecto
-    //usuario: '', //esta en otra tabla, traer datos mediante referencia de la sesion actual
+    estado: '',
+    ubicacion: '',
+    habilitado: '',
     fecha_ingreso: '',
     color: '',
     marca: '',
@@ -19,21 +17,35 @@ const DeviceRegistrationForm = ({ onClose }) => {
     serie: '',
     dimensionLargo: '',
     dimensionAlto: '',
-    dimensionProfundidad: '',
-    // registro: ''
-
+    dimensionProfundidad: ''
   });
 
-  const [tipos, setTipos] = useState([]); // State for device types
-  const [estados, setEstados] = useState([]); // State for device types
+  const [tipos, setTipos] = useState([]);
+  const [estados, setEstados] = useState([]);
 
   useEffect(() => {
     getAllTipos();
+    getAllEstados();
   }, []);
 
   useEffect(() => {
-    getAllEstados();
-  }, []);
+    if (device) {
+      setFormData({
+        tipo: device.tipo,
+        estado: device.estado,
+        ubicacion: device.ubicacion,
+        habilitado: device.habilitado,
+        fecha_ingreso: device.fecha_ingreso,
+        color: device.color,
+        marca: device.marca,
+        modelo: device.modelo,
+        serie: device.serie,
+        dimensionLargo: device.dimensionLargo,
+        dimensionAlto: device.dimensionAlto,
+        dimensionProfundidad: device.dimensionProfundidad,
+      });
+    }
+  }, [device]);
 
   const getAllTipos = async () => {
     try {
@@ -55,11 +67,11 @@ const DeviceRegistrationForm = ({ onClose }) => {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-
     setFormData({
       ...formData,
-      [name]: type === 'checkbox' ? checked : value, // Ajuste para manejar checkboxes
+      [name]: type === 'checkbox' ? checked : value,
     });
+
   };
 
   const handleSubmit = async (e) => {
@@ -78,24 +90,22 @@ const DeviceRegistrationForm = ({ onClose }) => {
       dimensionLargo: formData.dimensionLargo,
       dimensionAlto: formData.dimensionAlto,
       dimensionProfundidad: formData.dimensionProfundidad,
-    };
-    // console.log("dataToSend" + dataToSend);
-    try {
-      // Realizar la solicitud POST a la API de Laravel
-      await axios.post(`${endpoint}/dispositivo`, dataToSend);
-      console.log('Registro existoso de dispositivo.');
-      onClose(dataToSend); // Cerrar el modal después de registrar
-    } catch (error) {
-      console.error('Error al registrar el dispositivo:', error);
-    }
 
+    };
+
+    try {
+      // Realizar la solicitud PUT a la API de Laravel
+      await axios.put(`${endpoint}/dispositivo/${device.id}`, dataToSend);
+      console.log('Dispositivo actualizado con éxito.');
+
+      onClose(dataToSend); // Cerrar el modal después de editar
+    } catch (error) {
+      console.error('Error al actualizar el dispositivo:', error);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-
-      {/* Generar automaticamente un ID con la fecha y el año */}
-
       {/* CAMPOS DE FORMULARIO */}
       <div className="md:grid md:grid-cols-2 md:gap-4">
         {/* Tipo */}
@@ -269,13 +279,13 @@ const DeviceRegistrationForm = ({ onClose }) => {
             />
           </div>
         </div>
-      </div>
 
+      </div>
 
       <div className="flex justify-between space-x-4">
         <button
           type="button"
-          onClick={onClose}
+          onClick={() => onClose(false)}
           className="w-full bg-gray-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-gray-400 "
         >
           Cancelar
@@ -284,11 +294,11 @@ const DeviceRegistrationForm = ({ onClose }) => {
           type="submit"
           className="w-full bg-blue-800 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600"
         >
-          Registrar
+          Actualizar
         </button>
       </div>
     </form>
   );
 };
 
-export default DeviceRegistrationForm;
+export default DeviceEditForm;

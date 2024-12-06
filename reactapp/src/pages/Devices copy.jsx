@@ -16,7 +16,7 @@ const endpoint = "https://stunning-barnacle-q7pjqwj7wvw734j6q-8000.app.github.de
 const Devices = () => {
 
   const headers = [
-    { key: 'id', label: 'Id', tooltip: "" },
+    { key: 'id', label: 'ID', tooltip: "" },
     { key: 'tipoId', label: 'Tipo', tooltip: "" },
     { key: 'estadoId', label: 'Estado', tooltip: "" },
     { key: 'ubicacion', label: 'Ubicacion', tooltip: "" },
@@ -69,14 +69,12 @@ const Devices = () => {
           estadoId: estados[device.estadoId] || `Estado desconocido (${device.estadoId})`,
           habilitado: device.habilitado ? "Habilitado" : "De baja", // Transformación de habilitado
           ubicacion: device.ubicacion || "No registrado",
+          fecha_ingreso: device.fecha_ingreso || "No registrado",
           color: device.color || "No registrado",
           marca: device.marca || "No registrado",
           modelo: device.modelo || "No registrado",
           serie: device.serie || "No registrado",
           dimensiones: `${device.dimensionLargo || 'N/A'} x ${device.dimensionAlto || 'N/A'} x ${device.dimensionProfundidad || 'N/A'}`,
-          // dimensionLargo: device.dimensionLargo || "No registrado",
-          // dimensionAlto: device.dimensionAlto || "No registrado",
-          // dimensionProfundidad: device.dimensionProfundidad || "No registrado",
         }));
 
         setDeviceData(transformedData);
@@ -116,6 +114,29 @@ const Devices = () => {
     }
   };
 
+  const handleDeviceRegistration = (newDevice) => {
+    // Cerrar el modal
+    closeModal();
+    
+    // Agregar el nuevo dispositivo a la lista de dispositivos
+    setDeviceData((prevData) => [
+      ...prevData,
+      {
+        ...newDevice, 
+        tipoId: tipoMap[newDevice.tipoId] || `Tipo desconocido (${newDevice.tipoId})`,
+        estadoId: estadoMap[newDevice.estadoId] || `Estado desconocido (${newDevice.estadoId})`,
+        habilitado: newDevice.habilitado ? "Habilitado" : "De baja",
+        ubicacion: newDevice.ubicacion || "No registrado",
+        fecha_ingreso: newDevice.fecha_ingreso || "No registrado",
+        color: newDevice.color || "No registrado",
+        marca: newDevice.marca || "No registrado",
+        modelo: newDevice.modelo || "No registrado",
+        serie: newDevice.serie || "No registrado",
+        dimensiones: `${newDevice.dimensionLargo || 'N/A'} x ${newDevice.dimensionAlto || 'N/A'} x ${newDevice.dimensionProfundidad || 'N/A'}`,
+      }
+    ]);
+  };
+
   return (
     <div>
 
@@ -146,7 +167,7 @@ const Devices = () => {
           <h2 className="text-lg font-bold text-center w-full mb-3"> Registrar dispositivo </h2>
           {/* <h2 className="text-lg font-bold text-center w-full mb-3"> {titleModal} </h2> */}
 
-          <DeviceRegistrationForm onClose={closeModal} />
+          <DeviceRegistrationForm onClose={handleDeviceRegistration} />
         </Modal>
 
       </div>

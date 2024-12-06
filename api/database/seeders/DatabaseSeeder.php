@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Dispositivo;
+use App\Models\Tipo;
+use App\Models\Estado;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,11 +16,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        User::factory(20)->create();
 
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        // Llamar a otros seeders
+        $this->call([
+            EstadoSeeder::class,
+            TipoSeeder::class,
+        ]);
+
+        Dispositivo::factory(30)->create();
     }
 }

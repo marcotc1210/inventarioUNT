@@ -1,0 +1,10 @@
+TO DO:
+
+* validaciones en front end y en backend
+* animacion de carga. buscar en prompts antiguos.
+* codigo mas eficiente.
+* responsive
+* seguridad CORS
+* login de usuarios
+* pruebas de backend y frontend automatizadas
+* 

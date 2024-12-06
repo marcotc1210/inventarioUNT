@@ -11,12 +11,17 @@ import { FaArrowRightLong, FaArrowLeftLong } from "react-icons/fa6";
 import { FaTrashAlt, FaEdit } from "react-icons/fa";
 import { formatIfDate } from "../utils/formatters";
 
-
 const Table = ({ headers = [], data = [], onEdit, onDelete }) => {
   const [visibleColumns, setVisibleColumns] = useState(headers.map((header) => header.key));
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
+  //console.log(data);
+
+  // Ordena los datos por el ID más alto (suponiendo que 'id' es el campo de identificación)
+  const sortedData = useMemo(() => {
+    return [...data].sort((a, b) => b.id - a.id); // Orden descendente por 'id'
+  }, [data]);
 
   // Configuración de columnas basada en headers
   const columns = useMemo(
@@ -25,9 +30,48 @@ const Table = ({ headers = [], data = [], onEdit, onDelete }) => {
         accessorKey: header.key,
         header: header.label,
         cell: (info) => {
+          const value = info.getValue();
+          const columnKey = info.column.id; // Identificador de la columna
+          const rowData = info.row.original; // Datos completos de la fila actual
+
+          if (columnKey === "estadoId") {
+            return rowData.estado?.descripcion || "Otro";
+          }
+  
+          if (columnKey === "tipoId") {
+            return rowData.tipo?.descripcion || "Otro";
+          }
+
+          if (columnKey === "habilitado") { //regla de mayor especificidad primero
+            return value === 0 ? 'No' : 'Sí';
+          }
+
+          if (header.isDate) { 
+            return value == null ? 'No registrado' : formatIfDate(info.getValue());
+          }
+
+          // Definir los valores predeterminados para campos específicos
+          const defaultValues = {
+            habilitado: "No registrado", //tecnicamente no debe haber ningun valor null para este campo ya que es requerido por defecto en el formulario
+            color: "No registrado",
+            marca: "No registrado",
+            modelo: "No registrado",
+            serie: "No registrado",
+            ubicacion: "No registrado",
+            tipoId: "Otro",
+            estadoId: "Otro",
+            dimensionLargo: "N/D",
+            dimensionAlto: "N/D",
+            dimensionProfundidad: "N/D",
+          };
+          
+          // Si el campo tiene un valor predeterminado definido
+          if (defaultValues[columnKey] !== undefined) {
+            return value ?? defaultValues[columnKey];
+          }
+
           if (header.key === "actions") {
-            // Manejo de la columna de acciones
-            const rowData = info.row.original; // Obtener datos de la fila actual
+            const rowData = info.row.original;
             return (
               <div className="flex gap-2">
                 <button
@@ -38,24 +82,30 @@ const Table = ({ headers = [], data = [], onEdit, onDelete }) => {
                 </button>
                 <button
                   className="text-red-600 hover:text-red-700 mx-auto"
-                  onClick={() => onDelete(rowData)}
+                  onClick={() => onDelete(rowData.id)}
                 >
                   <FaTrashAlt size={25} />
                 </button>
               </div>
             );
           }
+          
+          // Lógica para combinar dimensiones
+          if (columnKey === "dimensiones") {
+            const largo = rowData.dimensionLargo ?? defaultValues.dimensionLargo;
+            const alto = rowData.dimensionAlto ?? defaultValues.dimensionAlto;
+            const profundidad = rowData.dimensionProfundidad ?? defaultValues.dimensionProfundidad;
 
-          // Aplicar formato para fechas o devolver el valor por defecto
-          return header.isDate ? formatIfDate(info.getValue()) : info.getValue();
+            return `${largo} x ${alto} x ${profundidad}`;
+          }
+
+          return value;
         },
-        meta: { alwaysVisible: index < 3 }, // Las tres primeras columnas siempre visibles
+        meta: { alwaysVisible: index < 3 },
       })),
     [headers, onEdit, onDelete]
   );
 
-
-  // Filtrar las columnas visibles
   const filteredColumns = useMemo(
     () =>
       columns.filter(
@@ -66,10 +116,11 @@ const Table = ({ headers = [], data = [], onEdit, onDelete }) => {
 
   // Configuración de la tabla
   const table = useReactTable({
-    data,
+    data: sortedData,  // Pasamos los datos ordenados
     columns: filteredColumns,
     initialState: {
       pagination: { pageIndex: 0, pageSize: 5 },
+      sorting: [{ id: 'id', desc: true }] // Ordenar por 'id' en orden descendente
     },
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -84,7 +135,6 @@ const Table = ({ headers = [], data = [], onEdit, onDelete }) => {
     );
   };
 
-  // Cerrar el dropdown al hacer clic fuera de él
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -100,9 +150,7 @@ const Table = ({ headers = [], data = [], onEdit, onDelete }) => {
 
   return (
     <div className="p-0 bg-gray-100 rounded-xl shadow-md mt-4">
-      {/* Bloque superior con título, filtro y paginación */}
       <div className="pt-4 px-8 flex items-center justify-between mb-4">
-        {/* Filtro de columnas */}
         <div className="relative">
           <button
             onClick={() => setIsDropdownOpen((prev) => !prev)}
@@ -130,9 +178,9 @@ const Table = ({ headers = [], data = [], onEdit, onDelete }) => {
                   <input
                     type="checkbox"
                     checked={
-                      visibleColumns.includes(header.key) || index < 3 // Siempre visibles las primeras tres columnas
+                      visibleColumns.includes(header.key) || index < 3
                     }
-                    disabled={index < 3} // Deshabilitar las tres primeras columnas
+                    disabled={index < 3}
                     onChange={() => handleColumnToggle(header.key)}
                   />
                   <label className="text-gray-600">{header.label}</label>
@@ -142,8 +190,6 @@ const Table = ({ headers = [], data = [], onEdit, onDelete }) => {
           )}
         </div>
 
-
-        {/* Controles de paginación */}
         <div className="flex items-center space-x-4 ml-auto">
           <button
             onClick={() => table.previousPage()}
@@ -163,7 +209,6 @@ const Table = ({ headers = [], data = [], onEdit, onDelete }) => {
             disabled={!table.getCanNextPage()}
             className="text-white px-3 py-2 rounded-md bg-gray-500 hover:bg-gray-600"
           >
-            {/* Siguiente */}
             <FaArrowRightLong />
           </button>
           <div>
@@ -183,7 +228,6 @@ const Table = ({ headers = [], data = [], onEdit, onDelete }) => {
         </div>
       </div>
 
-      {/* Tabla */}
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white rounded-lg border border-gray-200">
           <thead className="bg-gray-200 text-gray-700">

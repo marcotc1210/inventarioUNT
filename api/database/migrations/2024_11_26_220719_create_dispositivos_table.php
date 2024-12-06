@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('tipoId')->nullable()->constrained('tipos')->nullOnDelete();
             $table->foreignId('estadoId')->nullable()->constrained('estados')->nullOnDelete();
             $table->string('ubicacion');
-            $table->string('habilitado'); //varia con el tiempo
+            $table->boolean('habilitado'); //varia con el tiempo
             $table->string('color')->nullable();
             $table->string('marca')->nullable();
             $table->string('modelo')->nullable();

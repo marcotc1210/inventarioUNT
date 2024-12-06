@@ -10,8 +10,10 @@ class DispositivoController extends Controller
 {
     public function index()
     {
-        $dispositivos = Dispositivo::all();
-        return $dispositivos;
+        // $dispositivos = Dispositivo::all();
+        // return $dispositivos;
+        $dispositivos = Dispositivo::with('tipo', 'estado')->get();
+        return response()->json($dispositivos);
     }
 
     public function store(Request $request)
@@ -39,7 +41,7 @@ class DispositivoController extends Controller
     public function show(string $id)
     {
         $dispositivo = Dispositivo::find($id);
-        return $dispositivo;
+        return response()->json($dispositivo);
     }
 
     public function update(Request $request, string $id)
@@ -51,7 +53,7 @@ class DispositivoController extends Controller
         $dispositivo->ubicacion = $request->ubicacion;
         // $dispositivo->habilitado = $request->habilitado;
         // $dispositivo->usuario = $request->usuario;
-        $dispositivo->fecha = $request->fecha_ingreso;
+        $dispositivo->fecha_ingreso = $request->fecha_ingreso;
         $dispositivo->color = $request->color;
         $dispositivo->marca = $request->marca;
         $dispositivo->serie = $request->serie;
